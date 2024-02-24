@@ -22,7 +22,7 @@ public class Main {
                 temp = DataScanner.next();
                 notProcessingData += temp + "\n";
 //                System.out.println("scanning data / data = " + temp);
-                if (temp.equals("-1")) {
+                if (temp.equals("봇")) {
                     break;
                 }
             }
@@ -55,8 +55,7 @@ public class Main {
 //            System.out.println("fileReader function done");
 
             // 데이터 정리
-            ArrayList<Double> time = new ArrayList<>();
-            ArrayList<Double> priceData = new ArrayList<>();
+            ProData marketData = new ProData();
             while ((ch = reader.read()) != -1) {
                 int a = 0;
 
@@ -140,6 +139,17 @@ public class Main {
 //                    }
 //                }
 
+                String nowTime = ""; // 현재 처리중인 데이터 시간
+                if (ch == 8212) { // 시간 데이터 시작 지점 (-)
+                    for (int j = 0;j < 8;j++) { // (-)로 부터 8번 뒤에 있는 것이 시간 데이터
+                        ch = reader.read();
+                    }
+                    if ((ch = reader.read()) == 10) { // 스페이스 다 날려 시작지점으로 이동
+                        while ((ch = reader.read()) != 10) { // 다음줄이 나오기 전까지 데이터 입력받기
+                            nowTime += ch; // 시간 저장
+                        }
+                    }
+                }
 
                 if (ch == 49) {
                     ch = reader.read();
@@ -155,8 +165,7 @@ public class Main {
                                 ch = reader.read();
                                 a += (ch - 48);
                                 input[length] = a;
-                                priceData.add(Double.valueOf(a));
-                                time.add(Double.valueOf(length));
+                                marketData.setData(Double.valueOf(length), Double.valueOf(a), nowTime);
                                 length++;
                             }
                         }
@@ -166,26 +175,30 @@ public class Main {
 
 //            System.out.println(Arrays.toString(input) + "\n" + Arrays.toString(priceData.toArray()) + "\n" + Arrays.toString(time.toArray()));
 
-            while (!(i > length)) {
-                sum += input[i];
-                if (max < input[i]) {
-                    max = input[i];
-                    maxLength = i + 1;
-                }
-                if (min > input[i] && input[i] > 1) {
-                    min = input[i];
-                    minLength = i + 1;
-                }
-                i++;
-            }
-            average = sum;
-            average /= (length);
+//            while (!(i > length)) {
+//                sum += input[i];
+//                if (max < input[i]) {
+//                    max = input[i];
+//                    maxLength = i + 1;
+//                }
+//                if (min > input[i] && input[i] > 1) {
+//                    min = input[i];
+//                    minLength = i + 1;
+//                }
+//                i++;
+//            }
+//            average = sum;
+//            average /= (length);
+//
+//            resell = average;
+//            resell *= 95;
+//            resell /= 100;
+//
+//            marketData.timePrint();
+//            marketData.numberPrint();
+//            marketData.pricePrint();
 
-            resell = average;
-            resell *= 95;
-            resell /= 100;
-
-            System.out.println("평균값 : " + average + "\n최솟값 : " + min + " " + minLength + " 번째줄" + "\n최댓값 : " + max + " " + maxLength + " 번째줄" + "\n총 데이터 량 : " + (length + 1) + "\n리셀가 : " + resell);
+            System.out.println("\n평균값 : " + marketData.getAverage() + "\n최솟값 : " + marketData.getMin()[1] + " " + marketData.getMin()[0] + " 번째줄" + "\n최댓값 : " + marketData.getMax()[1] + " " + marketData.getMax()[0] + " 번째줄" + "\n총 데이터 량 : " + marketData.length() + "\n리셀가 : " + marketData.getResell());
 
             // 데이터 체크
 //            DoubleArrayListPrinter(time);
@@ -194,9 +207,9 @@ public class Main {
 //            DoubleArrayListLengthPrinter(priceData);
 
             // 차트 생성
-            XYChart chart = QuickChart.getChart("쌀값" , "", "", "y(x)", Changer(time), Changer(priceData));
-            chart.getStyler().setYAxisMin(min - 5.0);
-            chart.getStyler().setYAxisMax(max + 5.0);
+            XYChart chart = QuickChart.getChart("쌀값" , "", "", "y(x)", marketData.getNumber(), marketData.getPrice());
+            chart.getStyler().setYAxisMin(marketData.getMin()[1] - 5.0);
+            chart.getStyler().setYAxisMax(marketData.getMax()[1] + 5.0);
             new SwingWrapper(chart).displayChart();
 
             System.out.println("판매 희망가를 입력해주세요");
@@ -209,15 +222,6 @@ public class Main {
             System.out.println("최종 수익금 : " + (price * amount * 100));
         }
     }
-    static double[] Changer(ArrayList<Double> big) {
-        double[] smal = new double[big.size()];
-        int i = 0;
-        while (big.size() > i) {
-            smal[i] = big.get(i);
-            i++;
-        }
-        return smal;
-    }
 
     static void DoubleArrayListPrinter(ArrayList<Double> DouArr) {
         System.out.println(DouArr.toString());
@@ -225,5 +229,175 @@ public class Main {
 
     static void DoubleArrayListLengthPrinter(ArrayList<Double> DouArr) {
         System.out.println("Double Array List Length / data = " + DouArr.size());
+    }
+
+    static class ProData {
+
+        private class DataClass {
+            private String time;
+            private Double price;
+            private Double number;
+
+            DataClass() {
+                this.time = "";
+                this.price = 0.0;
+                this.number = 0.0;
+            }
+
+            DataClass(Double number, Double price, String time) {
+                this.time = time;
+                this.price = price;
+                this.number = number;
+            }
+
+            public void set(Double number, Double price, String time) {
+                this.time = time;
+                this.price = price;
+                this.number = number;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public Double getPrice() {
+                return price;
+            }
+
+            public Double getNumber() {
+                return number;
+            }
+        }
+
+        private ArrayList<DataClass> data;
+
+        ProData() {
+            data = new ArrayList<DataClass>();
+        }
+
+        public void setData(Double number, Double price, String time) {
+            data.add(new DataClass(number, price, time));
+        }
+
+        public String[] getTime () {
+            int i = 0;
+            String[] time = new String[data.size()];
+            while (data.size() > i) {
+                time[i] = data.get(i).getTime();
+                i++;
+            }
+            return time;
+        }
+
+        public double[] getNumber () {
+            int i = 0;
+            double[] arr = new double[data.size()];
+            while (data.size() > i) {
+                arr[i] = data.get(i).getNumber();
+                i++;
+            }
+            return arr;
+        }
+
+        public double[] getPrice () {
+            int i = 0;
+            double[] arr = new double[data.size()];
+            while (data.size() > i) {
+                arr[i] = data.get(i).getPrice();
+                i++;
+            }
+            return arr;
+        }
+
+        public String getAverage () {
+            String average = "";
+            int sum = 0;
+            int amount = 0;
+            while (amount < data.size()) {
+                sum += data.get(amount).getPrice().intValue();
+                amount++;
+            }
+            sum /= amount;
+            average = String.valueOf(sum);
+            return average;
+        }
+
+        public int[] getMin () {
+            int[] proMin = new int[2];
+            int number = 0;
+            int amount = 0;
+            int min = data.get(amount).getPrice().intValue();
+            while (amount < data.size()) {
+                if (min > data.get(amount).getPrice().intValue()) {
+                    min = data.get(amount).getPrice().intValue();
+                    number = data.get(amount).getNumber().intValue();
+                }
+                amount++;
+            }
+            proMin[1] = min;
+            proMin[0] = number;
+            return proMin;
+        }
+
+        public int[] getMax () {
+            int[] proMax = new int[2];
+            int number = 0;
+            int amount = 0;
+            int max = data.get(amount).getPrice().intValue();
+            while (amount < data.size()) {
+                if (max < data.get(amount).getPrice().intValue()) {
+                    max = data.get(amount).getPrice().intValue();
+                    number = data.get(amount).getNumber().intValue();
+                }
+                amount++;
+            }
+            proMax[1] = max;
+            proMax[0] = number;
+            return proMax;
+        }
+
+        public int length () {
+            int length = 0;
+            length = data.size();
+            return length;
+        }
+
+        public double getResell () {
+            double resell = 0;
+            resell = Double.parseDouble(this.getAverage());
+            resell *= 95;
+            resell /= 100;
+            return resell;
+        }
+
+        public void timePrint () {
+            int i = 0;
+            String[] arr = new String[data.size()];
+            while (data.size() > i) {
+                arr[i] = data.get(i).getTime();
+                i++;
+            }
+            System.out.println(Arrays.toString(arr));
+        }
+
+        public void pricePrint () {
+            int i = 0;
+            double[] arr = new double[data.size()];
+            while (data.size() > i) {
+                arr[i] = data.get(i).getPrice();
+                i++;
+            }
+            System.out.println(Arrays.toString(arr));
+        }
+
+        public void numberPrint () {
+            int i = 0;
+            double[] arr = new double[data.size()];
+            while (data.size() > i) {
+                arr[i] = data.get(i).getNumber();
+                i++;
+            }
+            System.out.println(Arrays.toString(arr));
+        }
     }
 }
