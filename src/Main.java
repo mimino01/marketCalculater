@@ -198,7 +198,12 @@ public class Main {
 //            marketData.numberPrint();
 //            marketData.pricePrint();
 
-            System.out.println("\n평균값 : " + marketData.getAverage() + "\n최솟값 : " + marketData.getMin()[1] + " " + marketData.getMin()[0] + " 번째줄" + "\n최댓값 : " + marketData.getMax()[1] + " " + marketData.getMax()[0] + " 번째줄" + "\n총 데이터 량 : " + marketData.length() + "\n리셀가 : " + marketData.getResell());
+            System.out.println(
+                    "\n평균값 : " + marketData.getAverage() +
+                    "\n최솟값 : " + marketData.getMin()[1] + " " + marketData.getMin()[0] + " 번째줄" +
+                    "\n최댓값 : " + marketData.getMax()[1] + " " + marketData.getMax()[0] + " 번째줄" +
+                    "\n총 데이터 량 : " + marketData.length() + "\n리셀가 : " + marketData.getResell()
+            );
 
             // 데이터 체크
 //            DoubleArrayListPrinter(time);
