@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.util.*;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,7 +9,29 @@ import org.knowm.xchart.XYChart;
 public class Main {
     public static void main(String[] args) throws IOException {
         {
-            FileReader reader = new FileReader("C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt");
+            Scanner scanner = new Scanner(System.in);
+            // 데이터 저장
+            System.out.println("데이터를 입력해주세요");
+            String notProcessingData = "";
+            String temp = "";
+            while (scanner.hasNextLine()) {
+                temp = scanner.nextLine();
+                notProcessingData += temp + "\n";
+                System.out.println("scanning data / data = " + notProcessingData);
+                if (temp.isEmpty()) {
+                    break;
+                }
+            }
+
+            String filePath = "C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt";
+
+            System.out.println("데이터 \n" + notProcessingData);
+
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.write(notProcessingData);
+            fileWriter.close();
+
+            FileReader reader = new FileReader(filePath);
 
             int ch, length = 0, i = 0, sum = 0, max = 0, min = 10000000, maxLength = 0, minLength = 0;
             int[] input = new int[1000];
