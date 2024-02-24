@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
 import java.io.FileReader;
@@ -10,6 +9,7 @@ import org.knowm.xchart.XYChart;
 public class Main {
     public static void main(String[] args) throws IOException {
         {
+            Scanner DataScanner = new Scanner(System.in);
             Scanner scanner = new Scanner(System.in);
             String filePath = "C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt";
 
@@ -17,14 +17,25 @@ public class Main {
             System.out.println("데이터를 입력해주세요");
             String notProcessingData = "";
             String temp = "";
-            while (scanner.hasNextLine()) {
-                temp = scanner.nextLine();
+
+            while (DataScanner.hasNextLine()) {
+                temp = DataScanner.next();
                 notProcessingData += temp + "\n";
 //                System.out.println("scanning data / data = " + temp);
-                if (temp.equals("자동공지 봇")) {
+                if (temp.equals("-1")) {
                     break;
                 }
             }
+
+//            while (scanner.hasNextLine()) {
+//                Scanner lineScanner = new Scanner(scanner.nextLine());
+//
+//                while (lineScanner.hasNext()) {
+//                    temp = lineScanner.next();
+//                    notProcessingData += temp + "\n";
+//                }
+//                lineScanner.close();
+//            }
 
 
 //            System.out.println("데이터 \n" + notProcessingData);
@@ -50,80 +61,105 @@ public class Main {
                 int a = 0;
 
                 // 시간 정보 확인
-                if (ch == 8212) { // 시간 데이터 시작 지점 (-)
-                    boolean afternoon = false; // 오후면 true 오전이면 false
-                    boolean ThisDataIsTrueData = false; // 더미 데이터 검사 / 더미가아니면 true 더미면 false
-                    for (int j = 0;j < 6;j++) { // (-)로 부터 6번 뒤에 있는 것이 시간 데이터
-                        ch = reader.read();
-//                        System.out.println(ch);
-                    }
-//                    System.out.println("afternoon data check / data = " + ch);
-                    if (ch == 54980) { // 오후(54980) 면 true
-                        afternoon = true;
-                        ThisDataIsTrueData = true;
-                    } else if (ch == 51204) { // 오전(51204) 면  false
-                        afternoon = false;
-                        ThisDataIsTrueData = true;
-                    } else { // 더미데이터면 false
-                        ThisDataIsTrueData = false;
-                    }
-//                    System.out.println(ThisDataIsTrueData);
-//                    System.out.println("check point 0");
-                    if (ThisDataIsTrueData) { // 더미데이터가 아니면 실행
-//                    System.out.println("befor the save / data = " + ch);
-                        String timeTamp = ""; // 시간 데이터 임시 저장
-                        if ((ch = reader.read()) == 32) { // 스페이스 다 날려 시작지점으로 이동
-//                        System.out.println("saving / data = " + ch);
-                            while ((ch = reader.read()) != 10) { // 다음줄이 나오기 전까지 데이터 입력받기
-//                            System.out.println("while func inside / data = " + ch);
-                                if (ch != 58) { // : 데이터 제외 다 입력
-//                                System.out.println("time save data check / data = " + ch);
-                                    timeTamp = timeTamp + String.valueOf((char)ch); // 데이터 임시 저장
-                                }
-                            }
-//                        System.out.println("time data check / data = " + timeTamp);
-                            time.add(Double.valueOf(timeTamp)); // 데이터 저장
-//                        System.out.println("after the save");
-                        }
-                    }
+//                if (ch == 8212) { // 시간 데이터 시작 지점 (-)
+//                    boolean afternoon = false; // 오후면 true 오전이면 false
+//                    boolean ThisDataIsTrueData = false; // 더미 데이터 검사 / 더미가아니면 true 더미면 false
+//                    for (int j = 0;j < 6;j++) { // (-)로 부터 6번 뒤에 있는 것이 시간 데이터
+//                        ch = reader.read();
+////                        System.out.println(ch);
+//                    }
+////                    System.out.println("afternoon data check / data = " + ch);
+//                    if (ch == 54980) { // 오후(54980) 면 true
+//                        afternoon = true;
+//                        ThisDataIsTrueData = true;
+//                    } else if (ch == 51204) { // 오전(51204) 면  false
+//                        afternoon = false;
+//                        ThisDataIsTrueData = true;
+//                    } else { // 더미데이터면 false
+//                        ThisDataIsTrueData = false;
+////                        System.out.println("wrong data insert / this '-' is wrong position");
+//                    }
+////                    System.out.println(ThisDataIsTrueData);
+////                    System.out.println("check point 0");
+//                    if (ThisDataIsTrueData) { // 더미데이터가 아니면 실행
+////                    System.out.println("befor the save / data = " + ch);
+//                        String timeTamp = ""; // 시간 데이터 임시 저장
+////                        System.out.println("between the save / data = " + ch);
+//                        if ((ch = reader.read()) == 10) { // 스페이스 다 날려 시작지점으로 이동
+////                        System.out.println("saving / data = " + ch);
+//                            while ((ch = reader.read()) != 10) { // 다음줄이 나오기 전까지 데이터 입력받기
+////                            System.out.println("while func inside / data = " + ch);
+//                                if (ch != 58) { // : 데이터 제외 다 입력
+////                                System.out.println("time save data check / data = " + ch);
+//                                    timeTamp = timeTamp + String.valueOf((char)ch); // 데이터 임시 저장
+//                                }
+//                            }
+////                        System.out.println("time data check / data = " + timeTamp);
+//                            time.add(Double.valueOf(timeTamp)); // 데이터 저장
+////                        System.out.println("after the save");
+//                        }
+//                    }
+//
+////                    System.out.println("check point 1");
+//                    while (ch != 49) { // 가격데이터 나올때 까지 이동
+//                        ch = reader.read();
+////                        System.out.println("shift data check / data = " + ch);
+//                        // 예외 데이터 입력
+//                        if (ch == 10) {
+////                            System.out.println("wrong data insert");
+//                            time.remove(time.size() - 1);
+//                            break;
+//                        }
+//                    }
+//
+////                    System.out.println("before the price data checker / data = " + ch);
+//                    // 가격정보 확인
+//                    if (ch == 49) {
+//                        ch = reader.read();
+//                        if (ch == 48) {
+//                            ch = reader.read();
+//                            if (ch == 48) {
+//                                ch = reader.read();
+//                                while (ch == 10) ch = reader.read();
+//                                if (ch == 58) {
+//                                    ch = reader.read();
+//                                    while (ch == 10) ch = reader.read();
+//                                    a += (ch - 48) * 10;
+//                                    ch = reader.read();
+//                                    a += (ch - 48);
+//                                    input[length] = a;
+//                                    priceData.add(Double.valueOf(a));
+//                                    time.add(Double.valueOf(length));
+//                                    length++;
+//                                }
+//                            }
+//                        }
+//                    } else {
+////                        System.out.println("wrong data insert / price data's front is not 1");
+////                        time.remove(time.size() - 1);
+//                    }
+//                }
 
-//                    System.out.println("check point 1");
-                    while (ch != 49) { // 가격데이터 나올때 까지 이동
-                        ch = reader.read();
-//                        System.out.println("shift data check / data = " + ch);
-                        // 예외 데이터 입력
-                        if (ch == 10) {
-//                            System.out.println("wrong data insert");
-                            time.remove(time.size() - 1);
-                            break;
-                        }
-                    }
 
-//                    System.out.println("before the price data checker / data = " + ch);
-                    // 가격정보 확인
-                    if (ch == 49) {
+                if (ch == 49) {
+                    ch = reader.read();
+                    if (ch == 48) {
                         ch = reader.read();
                         if (ch == 48) {
                             ch = reader.read();
-                            if (ch == 48) {
+                            while (ch == 10) ch = reader.read();
+                            if (ch == 58) {
                                 ch = reader.read();
-                                while (ch == 32) ch = reader.read();
-                                if (ch == 58) {
-                                    ch = reader.read();
-                                    while (ch == 32) ch = reader.read();
-                                    a += (ch - 48) * 10;
-                                    ch = reader.read();
-                                    a += (ch - 48);
-                                    input[length] = a;
-                                    priceData.add(Double.valueOf(a));
-//                                time.add(Double.valueOf(length));
-                                    length++;
-                                }
+                                while (ch == 10) ch = reader.read();
+                                a += (ch - 48) * 10;
+                                ch = reader.read();
+                                a += (ch - 48);
+                                input[length] = a;
+                                priceData.add(Double.valueOf(a));
+                                time.add(Double.valueOf(length));
+                                length++;
                             }
                         }
-                    } else {
-//                        System.out.println("wrong data insert");
-                        time.remove(time.size() - 1);
                     }
                 }
             }
