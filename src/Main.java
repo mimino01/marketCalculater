@@ -7,6 +7,7 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
 public class Main {
+    public static final String partyLevel = "240";
 
     /**
      * 로스트아크 내 경제 상황 분석기
@@ -15,29 +16,29 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // 스캐너 함수 호출
         Scanner scanner = new Scanner(System.in);
-        // 원하는 프로그램 입력받은 후 실행
-        System.out.println("쌀산기 0 입력");
-        System.out.println("크리저금 1 입력");
-        System.out.println("그외 입력시 종료");
-        switch (scanner.next()) {
-            case "0":
-                /**
-                 * 골드 게산기 실행
-                 */
-                goldCalculater();
-                break;
-            case "1":
-                /**
-                 * 크리스탈 저금통 세부값 계산기 실행
-                 */
-                cristalCalculater();
-                break;
-            default:
-                /**
-                 * 종료 입력
-                 */
+
+        while (true) {
+            // 원하는 프로그램 입력받은 후 실행
+            System.out.println("쌀산기 0 입력");
+            System.out.println("크리저금 1 입력");
+            System.out.println("그외 입력시 종료");
+            /**
+             * 0 입력시 goldCalculater 호출
+             * 1 입력시 cristalCalculater 호출
+             * 그외 입력시 프로그램 종료
+             */
+            switch (scanner.next()) {
+                case "0":
+                    goldCalculater();
+                    break;
+                case "1":
+                    cristalCalculater();
+                    break;
+                default:
+                    return;
+            }
         }
-    }
+            }
 
     /**
      * 로스트아크내 사용되는 저금통인 크리스탈 세부값 계산기
@@ -45,7 +46,7 @@ public class Main {
      * 적정 골드가격, 크리스탈 개수를 출력받음
      */
     private static void cristalCalculater() {
-
+        
     }
 
     /**
@@ -267,7 +268,7 @@ public class Main {
 
         System.out.println("판매 수량를 입력해주세요");
         double amount = Double.parseDouble(scanner.nextLine());
-        System.out.println("100:" + (int)price + " " + (int)amount + "만골 팝니다 | 거래내역 다수 & 거래내역 2년++ | 원정대 231 | 본캐대기중 | DM주세요 | 거래대기중");
+        System.out.println("100:" + (int)price + " " + (int)amount + "만골 팝니다 | 거래내역 다수 & 거래내역 2년++ | 원정대 "+ partyLevel +" | 본캐대기중 | DM주세요 | 거래대기중");
         System.out.println("최종 수익금 : " + (price * amount * 100));
     }
 
