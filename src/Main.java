@@ -7,6 +7,12 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
 public class Main {
+    /**
+     *
+     * @param args
+     * @throws IOException
+     */
+
     public static void main(String[] args) throws IOException {
         {
             Scanner DataScanner = new Scanner(System.in);
