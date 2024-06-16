@@ -46,7 +46,54 @@ public class Main {
      * 적정 골드가격, 크리스탈 개수를 출력받음
      */
     private static void cristalCalculater() {
-        
+        // 스캐너 호출
+        Scanner scanner = new Scanner(System.in);
+        // min은 최솟값, val은 현재값, amu는 현재 소유중인 골득값
+        int min = 0;
+        int val = 0;
+        int amu = 0;
+
+        // 데이터 입력받음
+        System.out.println("최솟값을 입력하세요");
+        min = scanner.nextInt();
+        System.out.println("현재값을 입력하세요");
+        val = scanner.nextInt();
+        System.out.println("저금할 값을 입력하세요");
+        amu = scanner.nextInt();
+
+        // 데이터 무결성 검사
+        if (min < 0) {
+            System.out.println("최솟값이 너무 작습니다");
+        } else if (min > val) {
+            System.out.println("최솟값 대비 현재값이 너무 높습니다");
+        } else if (val < 0) {
+            System.out.println("현재값이 너무 작습니다");
+        } else if (amu < 0) {
+            System.out.println("계산하려는 값이 너무 작습니다");
+        } else {
+            /**
+             * 환율 계산
+             * 1. 저금하려는 값(amu) 에서 최솟값(min)을 나눈다
+             * 2. 나머지에 몫을 나누고 최솟값에 더한뒤 현재가와 비교를 한다
+             * 3-1. 현재가가 더 낮다면 제금하려는 값에서 현재가 *0.9를 한 값을 나눈 값을 출력
+             * 3-2. 현재가가 더 높다면 저금하려는 값에서 나머지에 몫을 나누고 최솟값을 더한 값을 출력
+             */
+            int minQuotient = amu / min; // 저금하려는 값에서 최소값을 나눈 몫
+            int minRemainder = amu % min; // 저금하려는 값에서 최소값을 나눈 나머지
+            int gold; // 최종적으로 저금되는 골드
+
+            gold = (minRemainder / minQuotient) + min;
+
+            if (gold > val) {
+                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (minQuotient * (val * 9) / 10));
+                System.out.println("저금하는데 입력하는 골드량 : " + ((val * 9) / 10));
+                System.out.println("구매하는 크리스탈 량 : " + (minQuotient * 100));
+            } else {
+                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (gold * minQuotient));
+                System.out.println("저금하는데 입력하는 골드량 : " + gold);
+                System.out.println("구매하는 크리스탈 량 : " + (minQuotient * 100));
+            }
+        }
     }
 
     /**
