@@ -7,31 +7,69 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
 public class Main {
+
     /**
-     *
+     * 로스트아크 내 경제 상황 분석기
      * @param args
+     */
+    public static void main(String[] args) throws IOException {
+        // 스캐너 함수 호출
+        Scanner scanner = new Scanner(System.in);
+        // 원하는 프로그램 입력받은 후 실행
+        System.out.println("쌀산기 0 입력");
+        System.out.println("크리저금 1 입력");
+        System.out.println("그외 입력시 종료");
+        switch (scanner.next()) {
+            case "0":
+                /**
+                 * 골드 게산기 실행
+                 */
+                goldCalculater();
+                break;
+            case "1":
+                /**
+                 * 크리스탈 저금통 세부값 계산기 실행
+                 */
+                cristalCalculater();
+                break;
+            default:
+                /**
+                 * 종료 입력
+                 */
+        }
+    }
+
+    /**
+     * 로스트아크내 사용되는 저금통인 크리스탈 세부값 계산기
+     * 골드 가격, 저금할 골드를 입력받음
+     * 적정 골드가격, 크리스탈 개수를 출력받음
+     */
+    private static void cristalCalculater() {
+
+    }
+
+    /**
+     * 로스트아크 내 통용되는 재화인 골드 환율 계산기
      * @throws IOException
      */
+    public static void goldCalculater() throws IOException {
+        Scanner DataScanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        String filePath = "C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt";
 
-    public static void main(String[] args) throws IOException {
-        {
-            Scanner DataScanner = new Scanner(System.in);
-            Scanner scanner = new Scanner(System.in);
-            String filePath = "C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt";
+        // 데이터 저장
+        System.out.println("데이터를 입력해주세요");
+        String notProcessingData = "";
+        String temp = "";
 
-            // 데이터 저장
-            System.out.println("데이터를 입력해주세요");
-            String notProcessingData = "";
-            String temp = "";
-
-            while (DataScanner.hasNextLine()) {
-                temp = DataScanner.next();
-                notProcessingData += temp + "\n";
+        while (DataScanner.hasNextLine()) {
+            temp = DataScanner.next();
+            notProcessingData += temp + "\n";
 //                System.out.println("scanning data / data = " + temp);
-                if (temp.equals("봇")) {
-                    break;
-                }
+            if (temp.equals("봇")) {
+                break;
             }
+        }
 
 //            while (scanner.hasNextLine()) {
 //                Scanner lineScanner = new Scanner(scanner.nextLine());
@@ -46,26 +84,26 @@ public class Main {
 
 //            System.out.println("데이터 \n" + notProcessingData);
 
-            FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(notProcessingData);
-            fileWriter.close();
+        FileWriter fileWriter = new FileWriter(filePath);
+        fileWriter.write(notProcessingData);
+        fileWriter.close();
 
 //            System.out.println("fileWriter function done");
 
-            FileReader reader = new FileReader(filePath);
+        FileReader reader = new FileReader(filePath);
 
-            int ch, length = 0, i = 0, sum = 0, max = 0, min = 10000000, maxLength = 0, minLength = 0;
-            int[] input = new int[1000];
-            double average = 0.0, resell = 0.0;
+        int ch, length = 0, i = 0, sum = 0, max = 0, min = 10000000, maxLength = 0, minLength = 0;
+        int[] input = new int[1000];
+        double average = 0.0, resell = 0.0;
 
 //            System.out.println("fileReader function done");
 
-            // 데이터 정리
-            ProData marketData = new ProData();
-            while ((ch = reader.read()) != -1) {
-                int a = 0;
+        // 데이터 정리
+        ProData marketData = new ProData();
+        while ((ch = reader.read()) != -1) {
+            int a = 0;
 
-                // 시간 정보 확인
+            // 시간 정보 확인
 //                if (ch == 8212) { // 시간 데이터 시작 지점 (-)
 //                    boolean afternoon = false; // 오후면 true 오전이면 false
 //                    boolean ThisDataIsTrueData = false; // 더미 데이터 검사 / 더미가아니면 true 더미면 false
@@ -145,39 +183,39 @@ public class Main {
 //                    }
 //                }
 
-                String nowTime = ""; // 현재 처리중인 데이터 시간
-                if (ch == 8212) { // 시간 데이터 시작 지점 (-)
-                    for (int j = 0;j < 8;j++) { // (-)로 부터 8번 뒤에 있는 것이 시간 데이터
-                        ch = reader.read();
-                    }
-                    if ((ch = reader.read()) == 10) { // 스페이스 다 날려 시작지점으로 이동
-                        while ((ch = reader.read()) != 10) { // 다음줄이 나오기 전까지 데이터 입력받기
-                            nowTime += ch; // 시간 저장
-                        }
+            String nowTime = ""; // 현재 처리중인 데이터 시간
+            if (ch == 8212) { // 시간 데이터 시작 지점 (-)
+                for (int j = 0;j < 8;j++) { // (-)로 부터 8번 뒤에 있는 것이 시간 데이터
+                    ch = reader.read();
+                }
+                if ((ch = reader.read()) == 10) { // 스페이스 다 날려 시작지점으로 이동
+                    while ((ch = reader.read()) != 10) { // 다음줄이 나오기 전까지 데이터 입력받기
+                        nowTime += ch; // 시간 저장
                     }
                 }
+            }
 
-                if (ch == 49) {
+            if (ch == 49) {
+                ch = reader.read();
+                if (ch == 48) {
                     ch = reader.read();
                     if (ch == 48) {
                         ch = reader.read();
-                        if (ch == 48) {
+                        while (ch == 10) ch = reader.read();
+                        if (ch == 58) {
                             ch = reader.read();
                             while (ch == 10) ch = reader.read();
-                            if (ch == 58) {
-                                ch = reader.read();
-                                while (ch == 10) ch = reader.read();
-                                a += (ch - 48) * 10;
-                                ch = reader.read();
-                                a += (ch - 48);
-                                input[length] = a;
-                                marketData.setData(Double.valueOf(length), Double.valueOf(a), nowTime);
-                                length++;
-                            }
+                            a += (ch - 48) * 10;
+                            ch = reader.read();
+                            a += (ch - 48);
+                            input[length] = a;
+                            marketData.setData(Double.valueOf(length), Double.valueOf(a), nowTime);
+                            length++;
                         }
                     }
                 }
             }
+        }
 
 //            System.out.println(Arrays.toString(input) + "\n" + Arrays.toString(priceData.toArray()) + "\n" + Arrays.toString(time.toArray()));
 
@@ -204,44 +242,55 @@ public class Main {
 //            marketData.numberPrint();
 //            marketData.pricePrint();
 
-            System.out.println(
-                    "\n평균값 : " + marketData.getAverage() +
-                    "\n최솟값 : " + marketData.getMin()[1] + " " + marketData.getMin()[0] + " 번째줄" +
-                    "\n최댓값 : " + marketData.getMax()[1] + " " + marketData.getMax()[0] + " 번째줄" +
-                    "\n총 데이터 량 : " + marketData.length() + "\n리셀가 : " + marketData.getResell()
-            );
+        System.out.println(
+                "\n평균값 : " + marketData.getAverage() +
+                        "\n최솟값 : " + marketData.getMin()[1] + " " + marketData.getMin()[0] + " 번째줄" +
+                        "\n최댓값 : " + marketData.getMax()[1] + " " + marketData.getMax()[0] + " 번째줄" +
+                        "\n총 데이터 량 : " + marketData.length() + "\n리셀가 : " + marketData.getResell()
+        );
 
-            // 데이터 체크
+        // 데이터 체크
 //            DoubleArrayListPrinter(time);
 //            DoubleArrayListPrinter(priceData);
 //            DoubleArrayListLengthPrinter(time);
 //            DoubleArrayListLengthPrinter(priceData);
 
-            // 차트 생성
-            XYChart chart = QuickChart.getChart("쌀값" , "", "", "y(x)", marketData.getNumber(), marketData.getPrice());
-            chart.getStyler().setYAxisMin(marketData.getMin()[1] - 5.0);
-            chart.getStyler().setYAxisMax(marketData.getMax()[1] + 5.0);
-            new SwingWrapper(chart).displayChart();
+        // 차트 생성
+        XYChart chart = QuickChart.getChart("쌀값" , "", "", "y(x)", marketData.getNumber(), marketData.getPrice());
+        chart.getStyler().setYAxisMin(marketData.getMin()[1] - 5.0);
+        chart.getStyler().setYAxisMax(marketData.getMax()[1] + 5.0);
+        new SwingWrapper(chart).displayChart();
 
-            System.out.println("판매 희망가를 입력해주세요");
+        System.out.println("판매 희망가를 입력해주세요");
 
-            double price = Double.parseDouble(scanner.nextLine());
+        double price = Double.parseDouble(scanner.nextLine());
 
-            System.out.println("판매 수량를 입력해주세요");
-            double amount = Double.parseDouble(scanner.nextLine());
-            System.out.println("100:" + (int)price + " " + (int)amount + "만골 팝니다 | 거래내역 다수 & 거래내역 2년++ | 원정대 231 | 본캐대기중 | DM주세요 | 거래대기중");
-            System.out.println("최종 수익금 : " + (price * amount * 100));
-        }
+        System.out.println("판매 수량를 입력해주세요");
+        double amount = Double.parseDouble(scanner.nextLine());
+        System.out.println("100:" + (int)price + " " + (int)amount + "만골 팝니다 | 거래내역 다수 & 거래내역 2년++ | 원정대 231 | 본캐대기중 | DM주세요 | 거래대기중");
+        System.out.println("최종 수익금 : " + (price * amount * 100));
     }
 
+    /**
+     * Double 자료형으로 제작된 리스트 출력
+     * @param DouArr
+     */
     static void DoubleArrayListPrinter(ArrayList<Double> DouArr) {
         System.out.println(DouArr.toString());
     }
 
+    /**
+     * Double 자료형으로 제작된 리스트 길이 출력
+     * @param DouArr
+     */
     static void DoubleArrayListLengthPrinter(ArrayList<Double> DouArr) {
         System.out.println("Double Array List Length / data = " + DouArr.size());
     }
 
+    /**
+     * goldCalculater에 사용되는 클래스
+     * 시간, 가격, 고유식별번호를 가짐
+     */
     static class ProData {
 
         private class DataClass {
