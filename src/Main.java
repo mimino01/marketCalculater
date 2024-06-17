@@ -2,6 +2,8 @@ import java.io.FileWriter;
 import java.util.*;
 import java.io.FileReader;
 import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
@@ -78,21 +80,42 @@ public class Main {
              * 3-1. 현재가가 더 낮다면 제금하려는 값에서 현재가 *0.9를 한 값을 나눈 값을 출력
              * 3-2. 현재가가 더 높다면 저금하려는 값에서 나머지에 몫을 나누고 최솟값을 더한 값을 출력
              */
-            int minQuotient = amu / min; // 저금하려는 값에서 최소값을 나눈 몫
-            int minRemainder = amu % min; // 저금하려는 값에서 최소값을 나눈 나머지
-            int gold; // 최종적으로 저금되는 골드
-
-            gold = (minRemainder / minQuotient) + min;
+            int Quotient; // 저금하려는 값에서 최소값을 나눈 몫
+            int Remainder; // 저금하려는 값에서 최소값을 나눈 나머지
+            int minRemainder = amu; // 저금하려는 값에서 최소값을 나눈 나머지가 가장 작은 값
+            int minQuotient = amu;
+            int i = min;
+            
+            while (true) {
+                Quotient = amu / i;
+                Remainder = amu % i;
+                
+                if (Remainder < minRemainder) {
+                    minRemainder = Remainder;
+                    minQuotient = Quotient;
+                }
+                if (minRemainder == 0) break;
+                i++;
+                if (i >= val) break;
+            }
+    
+            System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (amu - minRemainder));
+            System.out.println("저금하는데 입력하는 골드량 : " + ((amu - minRemainder) / minQuotient));
+            System.out.println("구매하는 크리스탈 량 : " + (minQuotient * 100));
+            
+            /**
+            gold = (Remainder / Quotient) + min;
 
             if (gold > val) {
-                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (minQuotient * (val * 9) / 10));
+                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (Quotient * (val * 9) / 10));
                 System.out.println("저금하는데 입력하는 골드량 : " + ((val * 9) / 10));
-                System.out.println("구매하는 크리스탈 량 : " + (minQuotient * 100));
+                System.out.println("구매하는 크리스탈 량 : " + (Quotient * 100));
             } else {
-                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (gold * minQuotient));
+                System.out.println("저금하려는 골드량 : " + amu + " 저금 되는 골드량 : " + (gold * Quotient));
                 System.out.println("저금하는데 입력하는 골드량 : " + gold);
-                System.out.println("구매하는 크리스탈 량 : " + (minQuotient * 100));
+                System.out.println("구매하는 크리스탈 량 : " + (Quotient * 100));
             }
+             */
         }
     }
 
@@ -331,7 +354,7 @@ public class Main {
      * Double 자료형으로 제작된 리스트 길이 출력
      * @param DouArr
      */
-    static void DoubleArrayListLengthPrinter(ArrayList<Double> DouArr) {
+    static void DoubleArrayListLengthPrinter(@NotNull ArrayList<Double> DouArr) {
         System.out.println("Double Array List Length / data = " + DouArr.size());
     }
 
