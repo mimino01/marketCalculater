@@ -41,4 +41,9 @@ export default function Profile() {
         </>
     );
 }
+
+  export default function Profile() {
+  하 시발 존나어렵네
+
+  }
  */
