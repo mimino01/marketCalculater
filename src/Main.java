@@ -17,10 +17,6 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-       App();
-    }
-    
-    public static void App() throws IOException {
         // 스캐너 함수 호출
         Scanner scanner = new Scanner(System.in);
     
@@ -93,7 +89,7 @@ public class Main {
             int minRem = amu; // 나머지가 가장 작은 값
             int wayPoint = min; // 연산중인 나눌 값
             int nextPoint = min; // 몫이 같은 값중 가장 큰 웨이값
-
+            
 //            if (amu / min > min) {
 //
 //            }
@@ -182,7 +178,7 @@ public class Main {
     public static void goldCalculator() throws IOException {
         Scanner DataScanner = new Scanner(System.in);
         Scanner scanner = new Scanner(System.in);
-        String filePath = "C:\\Users\\mimin\\IdeaProjects\\DiscordDealingProject\\src\\data.txt";
+        String filePath = "src/data.txt";
     
         // 데이터 저장
         System.out.println("데이터를 입력해주세요");
@@ -590,4 +586,12 @@ public class Main {
         }
     }
     
+    /**
+     * 생활 계산기 함수
+     *
+      */
+    static void LifeCalculator () {
+        RAGCalculator Ragc = new RAGCalculator();
+        
+    }
 }
