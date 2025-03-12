@@ -588,7 +588,7 @@ public class Main {
     
     /**
      * 생활 계산기 함수
-     *
+     * 
       */
     static void LifeCalculator () {
         RAGCalculator Ragc = new RAGCalculator();

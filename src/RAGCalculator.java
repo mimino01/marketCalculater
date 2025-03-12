@@ -10,4 +10,15 @@ public class RAGCalculator {
 		this.price = price;
 	}
 	
+	String getItem() {
+		return this.item;
+	}
+	void setItem (String item) {
+		this.item = item;
+	}
+	
+	int getPrice () {
+		return this.price;
+	}
+	
 }
